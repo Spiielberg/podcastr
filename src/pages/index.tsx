@@ -15,7 +15,6 @@ type Episode = {
   members: string;
   publishedAt: string;
   thumbnail: string;
-  description: string;
   url: string;
   duration: number;
   durationAsString: string;
@@ -133,7 +132,6 @@ export const getStaticProps: GetStaticProps = async () => {
         locale: ptBR,
       }),
       thumbnail: episode.thumbnail,
-      description: episode.description,
       url: episode.file.url,
       duration: episode.file.duration,
       durationAsString: convertDurationToTimeString(
@@ -150,7 +148,7 @@ export const getStaticProps: GetStaticProps = async () => {
       latestEpisodes,
       allEpisodes,
     },
-    revalidate: 60 * 60 * 8,
+    revalidate: 60 * 60 * 8, // 8 hours
   };
 };
 
