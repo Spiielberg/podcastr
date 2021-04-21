@@ -9,7 +9,9 @@ const Home: React.FC = (): React.ReactElement => {
 export default Home;
 
 export async function getStaticProps() {
-  const response = await fetch('http://localhost:3333/episodes');
+  const response = await fetch(
+    'https://my-json-server.typicode.com/Spiielberg/podcastr-server'
+  );
   const data = await response.json();
 
   return {
