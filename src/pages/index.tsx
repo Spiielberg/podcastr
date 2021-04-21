@@ -10,7 +10,7 @@ export default Home;
 
 export async function getStaticProps() {
   const response = await fetch(
-    'https://my-json-server.typicode.com/Spiielberg/podcastr-server'
+    'https://my-json-server.typicode.com/Spiielberg/podcastr-server/episodes'
   );
   const data = await response.json();
 
