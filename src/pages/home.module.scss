@@ -3,6 +3,32 @@
   height: calc(100vh - 6.5rem);
   overflow-y: scroll;
 
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--gray-100);
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: var(--gray-100);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--gray-200);
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: var(--gray-100);
+    border-radius: 0.25rem;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--gray-500);
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: var(--gray-100);
+  }
+
   h2 {
     margin-top: 3rem;
     margin-bottom: 1.5rem;
