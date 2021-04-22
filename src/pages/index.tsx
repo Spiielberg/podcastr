@@ -38,17 +38,21 @@ const Home: React.FC<HomeProps> = ({
           {latestEpisodes.map(episode => {
             return (
               <li key={episode.id}>
-                <Image
-                  width={192}
-                  height={192}
-                  objectFit='cover'
-                  src={episode.thumbnail}
-                  alt={episode.title}
-                />
+                <Link href={`/episodes/${episode.id}`}>
+                  <a>
+                    <Image
+                      width={192}
+                      height={192}
+                      objectFit='cover'
+                      src={episode.thumbnail}
+                      alt={episode.title}
+                    />
+                  </a>
+                </Link>
 
                 <div className={styles.episodeDetails}>
                   <Link href={`/episodes/${episode.id}`}>
-                    <a>{episode.title}</a>
+                    <a className={styles.link}>{episode.title}</a>
                   </Link>
                   <p>{episode.members}</p>
                   <span>{episode.publishedAt}</span>
@@ -83,17 +87,21 @@ const Home: React.FC<HomeProps> = ({
               return (
                 <tr key={episode.id}>
                   <td style={{ width: 72 }}>
-                    <Image
-                      width={120}
-                      height={120}
-                      objectFit='cover'
-                      src={episode.thumbnail}
-                      alt={episode.title}
-                    />
+                    <Link href={`/episodes/${episode.id}`}>
+                      <a>
+                        <Image
+                          width={120}
+                          height={120}
+                          objectFit='cover'
+                          src={episode.thumbnail}
+                          alt={episode.title}
+                        />
+                      </a>
+                    </Link>
                   </td>
                   <td>
                     <Link href={`/episodes/${episode.id}`}>
-                      <a>{episode.title}</a>
+                      <a className={styles.link}>{episode.title}</a>
                     </Link>
                   </td>
                   <td>{episode.members}</td>
