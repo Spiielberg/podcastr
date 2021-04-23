@@ -14,7 +14,11 @@ export const Player: React.FC = (): React.ReactElement => {
     episodeList,
     currentEpisodeIndex,
     isPlaying,
+    isShuffling,
+    isLooping,
     togglePlay,
+    toggleShuffle,
+    toggleLoop,
     setPlayingState,
     playPrevious,
     playNext,
@@ -88,18 +92,24 @@ export const Player: React.FC = (): React.ReactElement => {
             ref={audioRef}
             src={episode.url}
             autoPlay
+            loop={isLooping}
             onPlay={() => setPlayingState(true)}
             onPause={() => setPlayingState(false)}
           />
         )}
 
         <div className={styles.buttons}>
-          <button type='button' disabled={!episode}>
+          <button
+            className={isShuffling ? styles.isActive : ''}
+            type='button'
+            disabled={!episode || episodeList.length === 1}
+            onClick={toggleShuffle}
+          >
             <img src='/shuffle.svg' alt='Embaralhar' />
           </button>
           <button
             type='button'
-            disabled={!episode || !hasPrevious}
+            disabled={!episode || !hasPrevious || episodeList.length <= 1}
             onClick={playPrevious}
           >
             <img src='/play-previous.svg' alt='Tocar anterior' />
@@ -118,12 +128,17 @@ export const Player: React.FC = (): React.ReactElement => {
           </button>
           <button
             type='button'
-            disabled={!episode || !hasNext}
+            disabled={!episode || !hasNext || episodeList.length <= 1}
             onClick={playNext}
           >
             <img src='/play-next.svg' alt='Tocar próxima' />
           </button>
-          <button type='button' disabled={!episode}>
+          <button
+            type='button'
+            className={isLooping ? styles.isActive : ''}
+            disabled={!episode}
+            onClick={toggleLoop}
+          >
             <img src='/repeat.svg' alt='Repetir' />
           </button>
         </div>
