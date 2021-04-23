@@ -1,5 +1,4 @@
 import { AppProps } from 'next/app';
-import Head from 'next/head';
 
 import '../styles/global.scss';
 import styles from '../styles/app.module.scss';
@@ -14,20 +13,15 @@ const MyApp: React.FC<AppProps> = ({
   pageProps,
 }): React.ReactElement => {
   return (
-    <>
-      <Head>
-        <title>Podcastr</title>
-      </Head>
-      <PlayerContextProvider>
-        <div className={styles.wrapper}>
-          <main>
-            <Header />
-            <Component {...pageProps} />
-          </main>
-          <Player />
-        </div>
-      </PlayerContextProvider>
-    </>
+    <PlayerContextProvider>
+      <div className={styles.wrapper}>
+        <main>
+          <Header />
+          <Component {...pageProps} />
+        </main>
+        <Player />
+      </div>
+    </PlayerContextProvider>
   );
 };
 
