@@ -123,7 +123,9 @@ const Home: React.FC<HomeProps> = ({
                     </td>
                     <td>{episode.members}</td>
                     <td style={{ width: 100 }}>{episode.publishedAt}</td>
-                    <td>{episode.durationAsString}</td>
+                    <td style={{ textAlign: 'right' }}>
+                      {episode.durationAsString}
+                    </td>
                     <td>
                       <button
                         type='button'
