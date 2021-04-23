@@ -1,13 +1,17 @@
 import Image from 'next/image';
-import { useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Slider from 'rc-slider';
 
 import { usePlayer } from '../../contexts/PlayerContext';
+
+import { convertDurationToTimeString } from '../../utils/convertDurationToTimeString';
 
 import 'rc-slider/assets/index.css';
 import styles from './styles.module.scss';
 
 export const Player: React.FC = (): React.ReactElement => {
+  const [progress, setProgress] = useState(0);
+
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const {
@@ -24,11 +28,35 @@ export const Player: React.FC = (): React.ReactElement => {
     playNext,
     hasPrevious,
     hasNext,
+    clearPlayerState,
   } = usePlayer();
 
   const episode = useMemo(() => {
     return episodeList[currentEpisodeIndex];
   }, [episodeList, currentEpisodeIndex]);
+
+  const setupProgressListener = useCallback(() => {
+    audioRef.current.currentTime = 0;
+
+    audioRef.current.addEventListener('timeupdate', () => {
+      setProgress(Math.floor(audioRef.current.currentTime));
+    });
+  }, []);
+
+  const handleEpisodeEnded = useCallback(() => {
+    if (hasNext) {
+      playNext();
+    } else {
+      clearPlayerState();
+      setProgress(0);
+    }
+  }, [hasNext]);
+
+  const handleSeek = useCallback((amount: number) => {
+    audioRef.current.currentTime = amount;
+
+    setProgress(amount);
+  }, []);
 
   useEffect(() => {
     if (!audioRef.current) {
@@ -68,7 +96,7 @@ export const Player: React.FC = (): React.ReactElement => {
 
       <footer className={!episode ? styles.empty : ''}>
         <div className={styles.progress}>
-          <span>00:00</span>
+          <span>{convertDurationToTimeString(progress)}</span>
           <div className={styles.slider}>
             {episode ? (
               <Slider
@@ -79,12 +107,15 @@ export const Player: React.FC = (): React.ReactElement => {
                   borderColor: 'var(--green-500)',
                   borderWidth: 4,
                 }}
+                max={episode.duration}
+                value={progress}
+                onChange={handleSeek}
               />
             ) : (
               <div className={styles.emptySlider} />
             )}
           </div>
-          <span>00:00</span>
+          <span>{convertDurationToTimeString(episode?.duration ?? 0)}</span>
         </div>
 
         {episode && (
@@ -95,6 +126,8 @@ export const Player: React.FC = (): React.ReactElement => {
             loop={isLooping}
             onPlay={() => setPlayingState(true)}
             onPause={() => setPlayingState(false)}
+            onEnded={handleEpisodeEnded}
+            onLoadedMetadata={setupProgressListener}
           />
         )}
 

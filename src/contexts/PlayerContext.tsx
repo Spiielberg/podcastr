@@ -30,6 +30,7 @@ type PlayerContextData = {
   playNext: () => void;
   hasPrevious: boolean;
   hasNext: boolean;
+  clearPlayerState: () => void;
 };
 
 export const PlayerContext = createContext<PlayerContextData>(
@@ -46,6 +47,17 @@ export const PlayerContextProvider: React.FC = ({
   const [isPlaying, setIsPlaying] = useState(false);
   const [isShuffling, setIsShuffling] = useState(false);
   const [isLooping, setIsLooping] = useState(false);
+
+  const hasPrevious = useMemo(
+    () => currentEpisodeIndex > 0 || isShuffling || isLooping,
+    [currentEpisodeIndex, isShuffling, isLooping]
+  );
+
+  const hasNext = useMemo(
+    () =>
+      currentEpisodeIndex + 1 < episodeList.length || isShuffling || isLooping,
+    [currentEpisodeIndex, episodeList, isShuffling, isLooping]
+  );
 
   const play = useCallback((episode: Episode) => {
     setEpisodeList([episode]);
@@ -75,17 +87,6 @@ export const PlayerContextProvider: React.FC = ({
     setIsPlaying(state);
   }, []);
 
-  const hasPrevious = useMemo(
-    () => currentEpisodeIndex > 0 || isShuffling || isLooping,
-    [currentEpisodeIndex, isShuffling, isLooping]
-  );
-
-  const hasNext = useMemo(
-    () =>
-      currentEpisodeIndex + 1 < episodeList.length || isShuffling || isLooping,
-    [currentEpisodeIndex, episodeList, isShuffling, isLooping]
-  );
-
   const playPrevious = useCallback(() => {
     if (isShuffling) {
       const nextRandomEpisodeIndex = Math.floor(
@@ -110,6 +111,10 @@ export const PlayerContextProvider: React.FC = ({
     }
   }, [currentEpisodeIndex, isShuffling]);
 
+  const clearPlayerState = useCallback(() => {
+    setEpisodeList([]);
+  }, []);
+
   return (
     <PlayerContext.Provider
       value={{
@@ -128,6 +133,7 @@ export const PlayerContextProvider: React.FC = ({
         playNext,
         hasPrevious,
         hasNext,
+        clearPlayerState,
       }}
     >
       {children}
