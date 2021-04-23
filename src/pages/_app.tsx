@@ -18,17 +18,15 @@ const MyApp: React.FC<AppProps> = ({
       <Head>
         <title>Podcastr</title>
       </Head>
-      <body>
-        <PlayerContextProvider>
-          <div className={styles.wrapper}>
-            <main>
-              <Header />
-              <Component {...pageProps} />
-            </main>
-            <Player />
-          </div>
-        </PlayerContextProvider>
-      </body>
+      <PlayerContextProvider>
+        <div className={styles.wrapper}>
+          <main>
+            <Header />
+            <Component {...pageProps} />
+          </main>
+          <Player />
+        </div>
+      </PlayerContextProvider>
     </>
   );
 };

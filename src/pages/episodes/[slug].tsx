@@ -7,6 +7,8 @@ import ptBR from 'date-fns/locale/pt-BR';
 import { api } from '../../services/api';
 import { convertDurationToTimeString } from '../../utils/convertDurationToTimeString';
 
+import { usePlayer } from '../../contexts/PlayerContext';
+
 import styles from './styles.module.scss';
 
 type Episode = {
@@ -26,6 +28,8 @@ type EpisodeProps = {
 };
 
 const Episode: React.FC<EpisodeProps> = ({ episode }): React.ReactElement => {
+  const { play } = usePlayer();
+
   return (
     <div className={styles.episode}>
       <div className={styles.thumbnailContainer}>
@@ -40,7 +44,7 @@ const Episode: React.FC<EpisodeProps> = ({ episode }): React.ReactElement => {
           objectFit='cover'
           src={episode.thumbnail}
         />
-        <button type='button'>
+        <button type='button' onClick={() => play(episode)}>
           <img src='/play.svg' alt='Tocar episódio' />
         </button>
       </div>
