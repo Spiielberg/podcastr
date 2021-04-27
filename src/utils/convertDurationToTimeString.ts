@@ -7,9 +7,5 @@ export const convertDurationToTimeString = (duration: number): string => {
     .map(unit => String(unit).padStart(2, '0'))
     .join(':');
 
-  if (timeString.substring(0, 2) === '00') {
-    return timeString.slice(3, timeString.length);
-  }
-
   return timeString;
 };
